@@ -1,6 +1,8 @@
-# Standard python library
+# Standard python libraries
 from tkinter import *
 from random import randint
+import os
+import sys
 
 
 class Snake:
@@ -97,11 +99,12 @@ def check_game_over(snake):
 def game_over():
     canvas.delete(ALL)
     canvas.create_text(canvas.winfo_width() / 2, canvas.winfo_height() / 2,
-                       font=("Arial", 50), text="GAME OVER", fill="red", tags="game_over")
+                       font=("Terminal", 50), text="GAME OVER!", fill="red", tags="game_over")
 
 
 def restart_program():
-    pass
+    path = sys.executable
+    os.execl(path, path, *sys.argv)
 
 
 # Variables
