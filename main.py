@@ -22,7 +22,7 @@ class Food:
         x = randint(0, (GAME_WIDTH // SPACE_SIZE) - 1) * SPACE_SIZE
         y = randint(0, (GAME_HEIGHT // SPACE_SIZE) - 1) * SPACE_SIZE
         self.coordinates = [x, y]
-        canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=FOOD_COLOR, tags="food")
+        canvas.create_oval(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=FOOD_COLOR, tags="food")
 
 
 def next_turn(snake, food):
@@ -52,7 +52,7 @@ def next_turn(snake, food):
         canvas.delete(snake.squares[-1])
         del snake.squares[-1]
 
-    if check_game_over():
+    if check_game_over(snake):
         game_over()
     else:
         window.after(SLOWNESS, next_turn, snake, food)
@@ -78,12 +78,26 @@ def change_direction(new_dir):
             direction = new_dir
 
 
-def check_game_over():
-    pass
+def check_game_over(snake):
+    x, y = snake.coordinates[0]
+
+    if x < 0 or x > GAME_WIDTH:
+        return True
+
+    if y < 0 or y > GAME_HEIGHT:
+        return True
+
+    for sq in snake.coordinates[1:]:
+        if x == sq[0] and y == sq[1]:
+            return True
+
+    return False
 
 
 def game_over():
-    pass
+    canvas.delete(ALL)
+    canvas.create_text(canvas.winfo_width() / 2, canvas.winfo_height() / 2,
+                       font=("Arial", 50), text="GAME OVER", fill="red", tags="game_over")
 
 
 def restart_program():
